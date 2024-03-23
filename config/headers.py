@@ -6,5 +6,5 @@ load_dotenv()
 
 class Headers:
     basic = {
-        "Authorization": f"Bearer {os.getenv('TOKEN')}"
+        "Authorization": f"Bearer {os.getenv('API_TOKEN')}"
     }
