@@ -1,14 +1,13 @@
 import allure
-import requests
 
-from utils.helper import Helper
 from services.users.endpoints import Endpoints
 from services.users.payloads import Payloads
 from config.headers import Headers
-from services.users.models.user_model import UserModel
+from services.users.models.user_model import UserModel, UsersModel
+from utils.http_handler import HTTPHandler
 
 
-class UsersAPI(Helper):
+class UsersAPI(HTTPHandler):
 
     def __init__(self):
         super().__init__()
@@ -16,25 +15,46 @@ class UsersAPI(Helper):
         self.endpoints = Endpoints()
         self.headers = Headers()
 
-    @allure.step("Create user")
     def create_user(self):
-        response = requests.post(
-            url=self.endpoints.create_user,
-            headers=self.headers.basic,
-            json=self.payloads.create_user
-        )
-        assert response.status_code == 200, response.json()
-        self.attach_response(response.json())
-        model = UserModel(**response.json())
-        return model
+        with allure.step("Create user"):
+            response = HTTPHandler.post(
+                url=self.endpoints.create_user,
+                headers=self.headers.basic,
+                json_data=self.payloads.create_user,
+                model=UserModel
+            )
+            return response
 
-    @allure.step("Get users by ID")
     def get_user_by_id(self, uuid):
-        response = requests.get(
-            url=self.endpoints.get_user_by_id(uuid),
-            headers=self.headers.basic,
-        )
-        assert response.status_code == 200, response.json()
-        self.attach_response(response.json())
-        model = UserModel(**response.json())
-        return model
+        with allure.step("Get users by ID"):
+            response = HTTPHandler.get(
+                url=self.endpoints.get_user_by_id(uuid),
+                headers=self.headers.basic,
+                model=UserModel
+            )
+            return response
+
+    def get_all_users(self):
+        with allure.step("Get all users"):
+            response = HTTPHandler.get(
+                url=self.endpoints.get_all_users,
+                headers=self.headers.basic,
+                model=UsersModel
+            )
+            return response
+
+    def del_user_by_uuid(self, uuid):
+        with allure.step("Delete user by ID"):
+            response = HTTPHandler.delete(
+                url=self.endpoints.get_user_by_id(uuid),
+                headers=self.headers.basic,
+            )
+            return response
+
+    def re_del_user_by_uuid(self, uuid):
+        with allure.step("Re-delete user by ID"):
+            response = HTTPHandler.double_delete(
+                url=self.endpoints.get_user_by_id(uuid),
+                headers=self.headers.basic,
+            )
+            return response
