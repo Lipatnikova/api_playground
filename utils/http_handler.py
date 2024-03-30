@@ -4,9 +4,10 @@ from utils.helper import Helper
 
 
 class HTTPHandler(Helper):
+
     @staticmethod
-    def get(url, headers, model):
-        response = requests.get(url=url, headers=headers)
+    def get(url, headers, model, params=None):
+        response = requests.get(url=url, headers=headers, params=params)
         Assertions.check_response_is_200(response)
         Helper.attach_response(response.json())
         return Helper.validate_model(response.json(), model)

@@ -6,6 +6,11 @@ from pydantic import ValidationError
 
 
 class Helper:
+
+    @staticmethod
+    def random_choice(items):
+        return random.choice(items)
+
     @staticmethod
     def attach_response(response):
         response = json.dumps(response, indent=4)

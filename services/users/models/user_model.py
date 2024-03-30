@@ -1,3 +1,4 @@
+import re
 from typing import List
 
 from pydantic import BaseModel, UUID4, field_validator
@@ -15,6 +16,12 @@ class UserModel(BaseModel):
             raise ValueError("Field is empty")
         else:
             return value
+
+    @field_validator("email")
+    def validate_email(cls, value):
+        if not bool(re.fullmatch(r'[\w.-]+@[\w-]+\.[\w.]+', value)):
+            raise ValueError("Email is invalid")
+        return value
 
 
 class MetaModel(BaseModel):

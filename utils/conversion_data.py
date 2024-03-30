@@ -1,12 +1,21 @@
-import random
+from utils.helper import Helper
 
 
-class ConversionData:
-
-    @staticmethod
-    def extract_uuids(users_before):
-        return [str(item['uuid']) for item in users_before['items']]
+class ConversionData(Helper):
 
     @staticmethod
-    def random_choice(items):
-        return random.choice(items)
+    def create_query_param(query_string):
+        return {"query": query_string}
+
+    @staticmethod
+    def extract_uuids(users):
+        return [str(item['uuid']) for item in users['items']]
+
+    @staticmethod
+    def extract_titles(games):
+        return [str(item['title']) for item in games['items']]
+
+    @staticmethod
+    def extract_part_of_title_game(games):
+        return [str(item['title'][4:10]) for item in games['items']]
+

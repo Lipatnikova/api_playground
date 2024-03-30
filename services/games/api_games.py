@@ -1,14 +1,13 @@
 import allure
-import requests
 
-from utils.helper import Helper
 from services.games.endpoints import Endpoints
 from services.games.payloads import Payloads
 from config.headers import Headers
-from services.games.models.game_model import GameModel, GamesModel, GamesSearchModel
+from services.games.models.games_model import GameModel, GamesModel
+from utils.http_handler import HTTPHandler
 
 
-class UsersAPI(Helper):
+class GamesAPI(HTTPHandler):
 
     def __init__(self):
         super().__init__()
@@ -16,35 +15,30 @@ class UsersAPI(Helper):
         self.endpoints = Endpoints()
         self.headers = Headers()
 
-    @allure.step("Get game by ID")
     def get_game_by_id(self, uuid):
-        response = requests.get(
-            url=self.endpoints.get_game(uuid),
-            headers=self.headers.basic,
-        )
-        assert response.status_code == 200, response.json()
-        self.attach_response(response.json())
-        model = GameModel(**response.json())
-        return model
+        with allure.step("Get game by ID"):
+            response = HTTPHandler.get(
+                url=self.endpoints.get_game(uuid),
+                headers=self.headers.basic,
+                model=GameModel
+            )
+            return response
 
-    @allure.step("Get all games")
     def get_all_games(self):
-        response = requests.get(
-            url=self.endpoints.games,
-            headers=self.headers.basic,
-        )
-        assert response.status_code == 200, response.json()
-        self.attach_response(response.json())
-        model = GamesModel(**response.json())
-        return model.model_dump()
+        with allure.step("Get all games"):
+            response = HTTPHandler.get(
+                url=self.endpoints.games,
+                headers=self.headers.basic,
+                model=GamesModel
+            )
+            return response
 
-    @allure.step("Get all games by search")
-    def get_all_games(self):
-        response = requests.get(
-            url=self.endpoints.games_and_search,
-            headers=self.headers.basic,
-        )
-        assert response.status_code == 200, response.json()
-        self.attach_response(response.json())
-        model = GamesSearchModel(**response.json())
-        return model.model_dump()
+    def get_games_and_search(self, query):
+        with allure.step("Get games and search"):
+            response = HTTPHandler.get(
+                url=self.endpoints.games_and_search,
+                headers=self.headers.basic,
+                model=GamesModel,
+                params=query
+            )
+            return response

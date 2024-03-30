@@ -1,5 +1,4 @@
 from config.status_code import StatusCode
-# from services.users.api_users import UsersAPI
 
 
 class Assertions:
@@ -30,3 +29,8 @@ class Assertions:
         status_code = response.status_code
         assert status_code == StatusCode.NOT_FOUND, \
             f'Response status code is incorrect, actual: {status_code}, expected : {StatusCode.NOT_FOUND}'
+
+    @staticmethod
+    def check_word_in_list(word, game_list):
+        check = any(word in game for game in game_list)
+        assert check
