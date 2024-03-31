@@ -24,6 +24,13 @@ class Assertions:
             f'Response status code is incorrect, actual: {status_code}'
 
     @staticmethod
+    def check_response_is_205(response) -> None:
+        """The method to check if the response status code is 205 (Reset Content)"""
+        status_code = response.status_code
+        assert status_code == StatusCode.RESET_CONTENT, \
+            f'Response status code is incorrect, actual: {status_code}, expected : {StatusCode.RESET_CONTENT}'
+
+    @staticmethod
     def check_response_is_404(response) -> None:
         """The method to check if the response status code is 404 (Not found)"""
         status_code = response.status_code

@@ -20,6 +20,11 @@ class HTTPHandler(Helper):
         return Helper.validate_model(response.json(), model)
 
     @staticmethod
+    def post_headers(url, headers):
+        response = requests.post(url=url, headers=headers)
+        Assertions.check_response_is_205(response)
+
+    @staticmethod
     def delete(url, headers):
         response = requests.delete(url=url, headers=headers)
         Assertions.check_response_is_204(response)
