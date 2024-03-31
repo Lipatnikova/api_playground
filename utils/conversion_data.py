@@ -19,3 +19,7 @@ class ConversionData(Helper):
     def extract_part_of_title_game(games):
         return [str(item['title'][4:10]) for item in games['items']]
 
+    @staticmethod
+    def remove_uuid(data):
+        del data['uuid']
+        return data
