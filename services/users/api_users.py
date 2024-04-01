@@ -15,14 +15,15 @@ class UsersAPI(HTTPHandler):
         self.endpoints = Endpoints()
         self.headers = Headers()
 
-    def create_user(self):
+    def create_user(self, payload):
         with allure.step("Create user"):
             response = HTTPHandler.post(
                 url=self.endpoints.create_user,
                 headers=self.headers.basic,
-                json_data=self.payloads.create_user,
-                model=UserModel
+                model=UserModel,
+                payload=payload
             )
+
             return response
 
     def get_user_by_id(self, uuid):

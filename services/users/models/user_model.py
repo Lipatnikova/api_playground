@@ -31,3 +31,10 @@ class MetaModel(BaseModel):
 class UsersModel(BaseModel):
     items: List[UserModel]
     meta: MetaModel
+
+
+class PayloadCreateUser(BaseModel):
+    email: str
+    password: str
+    name: str
+    nickname: str

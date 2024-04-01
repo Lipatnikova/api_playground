@@ -1,9 +1,6 @@
 import allure
 import pytest
 from config.base_test import BaseUsersTest
-from services.users.payloads import Payloads
-from utils.assertions import Assertions
-from utils.conversion_data import ConversionData
 
 
 @allure.epic("Administration")
@@ -31,22 +28,27 @@ class TestUsers(BaseUsersTest):
     def test_delete_user_by_uuid(self):
         with allure.step("Получить список пользователей"):
             users_before = self.api_users.get_all_users()
-            extract_uuids_all_users = ConversionData.extract_uuids(users_before)
+            extract_uuids_all_users = self.conversion_data.extract_uuids(users_before)
+
         with allure.step("Выбрать рандомного пользователя по ID"):
-            random_id = ConversionData.random_choice(extract_uuids_all_users)
+            random_id = self.conversion_data.random_choice(extract_uuids_all_users)
+
         with allure.step("Удалить выбранного пользователя"):
             self.api_users.del_user_by_uuid(random_id)
+
         with allure.step("Получить список пользователей"):
             users_after = self.api_users.get_all_users()
+
         with allure.step("Проверить, что пользователь с выбранным ID удален из списка пользователей"):
             assert (random_id in users_after) is False, \
                 'The user with the selected ID was not deleted'
+
         with allure.step("Проверить, что информация о пользователе не возвращается "
                          "при попытке удалить повторно пользователя"):
             self.api_users.re_del_user_by_uuid(random_id)
 
     @pytest.mark.regression
-    @allure.story("Создание пользователя в системе")
+    @allure.title("Создание пользователя в системе")
     @allure.testcase("API-3")
     @allure.description("""
     Цель задачи:
@@ -62,16 +64,19 @@ class TestUsers(BaseUsersTest):
     1. Созданный пользователь отображается в списке пользователей.
     2. Информация у добавленного пользователя по его uuid соответствует 
     данным введенным при его создании .""")
-    @allure.title("Create new user")
     def test_create_user(self):
         with allure.step("Создать пользователя"):
-            user = self.api_users.create_user()
+            payload = self.api_users.payloads.generate_fake_user()
+            user = self.api_users.create_user(payload)
+
         with allure.step("Проверить, что новый пользователь был создан и существует в списке пользователей"):
             all_users = self.api_users.get_all_users()
-            uuids_users = ConversionData.extract_uuids(all_users)
-            Assertions.check_word_in_list(str(user['uuid']), uuids_users)
+            uuids_users = self.conversion_data.extract_uuids(all_users)
+            self.assertions.check_word_in_list(str(user['uuid']), uuids_users)
+
         with allure.step("Проверить, что информация о пользователе соответствует информации при его создании"):
             data_user = self.api_users.get_user_by_id(user['uuid'])
-            data_user = ConversionData.remove_uuid(data_user)
-            # assert data_user ==
-
+            data_user = self.conversion_data.remove_uuid(data_user)
+            self.conversion_data.remove_password(payload)
+            assert data_user == payload, \
+                "Data received in the response does not match the data entered when creating the user"

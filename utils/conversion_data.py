@@ -23,3 +23,8 @@ class ConversionData(Helper):
     def remove_uuid(data):
         del data['uuid']
         return data
+
+    @staticmethod
+    def remove_password(payload):
+        del payload['password']
+        return payload
