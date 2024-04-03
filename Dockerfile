@@ -1,4 +1,4 @@
-FROM python:3.10-alpine3.19
+FROM python:3.12.0a4-alpine3.17
 
 RUN apk update && \
     apk add openjdk11-jre curl tar && \

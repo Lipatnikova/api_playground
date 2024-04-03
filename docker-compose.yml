@@ -1,8 +1,8 @@
-version: "3.7"
+version: '3.7'
 
 services:
   api-tests:
-    image: api-tests:v1
+    image: python:3.12.0a4-alpine3.17
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,15 +12,4 @@ services:
     working_dir: /usr/workspace
     environment:
       STAGE: prod
-      SUITE: regression
       API_TOKEN: ${API_TOKEN}
-
-  report:
-    image: api-tests:v1
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/usr/workspace
-    command: /bin/sh -c "allure generate allure-results --clean -o allure-report"
-    working_dir: /usr/workspace
