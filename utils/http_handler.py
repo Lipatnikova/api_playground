@@ -35,3 +35,10 @@ class HTTPHandler(Helper):
         response = requests.delete(url=url, headers=headers)
         Assertions.check_response_is_404(response)
         return response
+
+    @staticmethod
+    def patch_impossible_to_update(url, headers, model, payload):
+        response = requests.patch(url=url, headers=headers, json=payload)
+        Assertions.check_response_is_409(response)
+        Helper.attach_response(response.json())
+        return Helper.validate_model(response.json(), model)

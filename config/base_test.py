@@ -12,7 +12,7 @@ class BaseUsersTest:
         self.assertions = Assertions()
 
 
-class BaseGamesTest:
+class BaseGamesTest(BaseUsersTest):
 
     def setup_method(self):
         self.api_games = GamesAPI()

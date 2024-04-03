@@ -3,7 +3,7 @@ import allure
 from services.users.endpoints import Endpoints
 from services.users.payloads import Payloads
 from config.headers import Headers
-from services.users.models.user_model import UserModel, UsersModel
+from services.users.models.user_model import UserModel, UsersModel, UpdateUser
 from utils.http_handler import HTTPHandler
 
 
@@ -59,3 +59,12 @@ class UsersAPI(HTTPHandler):
                 headers=self.headers.basic,
             )
             return response
+
+    def update_user_by_uuid(self, uuid, payload):
+        response = HTTPHandler.patch_impossible_to_update(
+            url=self.endpoints.get_user_by_id(uuid),
+            headers=self.headers.basic,
+            model=UpdateUser,
+            payload=payload
+        )
+        return response

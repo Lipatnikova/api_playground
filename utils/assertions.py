@@ -38,6 +38,14 @@ class Assertions:
             f'Response status code is incorrect, actual: {status_code}, expected : {StatusCode.NOT_FOUND}'
 
     @staticmethod
+    def check_response_is_409(response) -> None:
+        """The method to check if the response status code is 409 (Conflict)"""
+        status_code = response.status_code
+        assert status_code == StatusCode.CONFLICT, \
+            f'Response status code is incorrect, actual: {status_code}, expected : {StatusCode.CONFLICT}'
+
+
+    @staticmethod
     def check_word_in_list(word, game_list):
         check = any(word in game for game in game_list)
-        assert check
+        assert check, f"The expected word: {word} is not in the list: {game_list}"

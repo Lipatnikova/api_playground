@@ -3,4 +3,5 @@ class StatusCode:
     NO_CONTENT = 204
     RESET_CONTENT = 205
     NOT_FOUND = 404
+    CONFLICT = 409
     INTERNAL_ERROR = 500

@@ -28,3 +28,9 @@ class ConversionData(Helper):
     def remove_password(payload):
         del payload['password']
         return payload
+
+    @staticmethod
+    def random_key_nickname_or_email(user_dict):
+        possible_keys = [key for key in user_dict.keys() if key in ['nickname', 'email']]
+        random_key = Helper.random_choice(possible_keys)
+        return {random_key: user_dict[random_key]}

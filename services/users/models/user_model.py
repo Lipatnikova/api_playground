@@ -1,7 +1,7 @@
 import re
 from typing import List
 
-from pydantic import BaseModel, UUID4, field_validator
+from pydantic import BaseModel, UUID4, field_validator, Field
 
 
 class UserModel(BaseModel):
@@ -38,3 +38,8 @@ class PayloadCreateUser(BaseModel):
     password: str
     name: str
     nickname: str
+
+
+class UpdateUser(BaseModel):
+    code: int
+    message: str

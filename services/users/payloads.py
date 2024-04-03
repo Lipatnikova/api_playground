@@ -20,6 +20,5 @@ class Payloads:
 
     try:
         fake_user = generate_fake_user()
-        print(fake_user)
     except ValidationError as e:
         print(e)
