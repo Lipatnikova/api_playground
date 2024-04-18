@@ -1,7 +1,7 @@
-from config.base_host import BaseHost
+from config.base_host import BaseHost, APIRoutes
 
 
 class Endpoints:
-    games = f"{BaseHost.HOST}/games"
-    games_and_search = f"{BaseHost.HOST}/games/search"
-    get_game = lambda self, uuid: f"{BaseHost.HOST}/games/{uuid}"
+    games = f"{BaseHost.HOST}{APIRoutes.GAMES}"
+    games_and_search = f"{BaseHost.HOST}{APIRoutes.GAMES}{APIRoutes.SEARCH}"
+    get_game = lambda self, uuid: f"{BaseHost.HOST}{APIRoutes.GAMES}{uuid}"
